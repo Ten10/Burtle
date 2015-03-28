@@ -1,0 +1,33 @@
+HKCR
+{
+	Burtle.BurtleProvider.1 = s 'Burtle'
+	{
+		CLSID = s '{4F1C80D0-F8E8-43EE-9C63-553327D064F7}'
+	}
+	Burtle.BurtleProvider = s 'Burtle'
+	{
+		CLSID = s '{4F1C80D0-F8E8-43EE-9C63-553327D064F7}'
+		CurVer = s 'Burtle.BurtleProvider.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {4F1C80D0-F8E8-43EE-9C63-553327D064F7} = s 'Burtle'
+		{
+			ProgID = s 'Burtle.BurtleProvider.1'
+			VersionIndependentProgID = s 'Burtle.BurtleProvider'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{FF484CE5-A2FA-44E1-85C0-45B56A83CC02}'
+			
+			'Implemented Categories'
+			{
+				'{3494FA92-B139-4730-9591-01135D5E7831}'
+				{
+				}
+			}
+		}
+	}
+}
