@@ -14,13 +14,6 @@ struct CBugzillaQuery
 {
 	BugFunctionParams::CBugSearchParam SearchParam;
 	vector<CBugInfo> BugInfos;
-
-	CBugzillaQuery& operator=(CBugzillaQuery&& Other)
-	{
-		SearchParam = move(Other.SearchParam);
-		BugInfos = move(Other.BugInfos);
-		return *this;
-	}
 };
 
 struct CBugModificationInfo

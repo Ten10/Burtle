@@ -322,14 +322,14 @@ void CBugSelectionDialog::OnBugFieldsAvailable(vector<CBugField>& Fields)
 	UpdateData(false);
 }
 
-void CBugSelectionDialog::OnBugInfosAvailable(CBugzillaQuery& Query)
+void CBugSelectionDialog::OnBugInfosAvailable(CBugzillaQuery&& Query)
 {
 	/*TODO need to add cancellation token so we can cancel the tasks when exiting the dialog*/
 	m_RequestName.clear();
 	m_ProgressMessage.clear();
 	m_ListCtrl.Invalidate();
 
-	m_Query = Query;
+	m_Query = std::move(Query);
 	for (auto itColumn = m_Columns.begin(); itColumn != m_Columns.end(); ++itColumn)
 		itColumn->RowValues.clear();
 
@@ -410,7 +410,7 @@ void CBugSelectionDialog::OnBnClickedSearchButton(const CWindow* pSender)
 		CBugzillaQuery query;
 		query.SearchParam = param;
 		query.BugInfos = m_Server.GetBugs(param).Objects.Container;
-		return query;
+		return std::move(query);
 	});
 	m_GetBugInfos.then([=](concurrency::task<CBugzillaQuery> QueryTask) 
 	{ 

@@ -62,9 +62,9 @@ namespace Bugzilla
 	{
 	}
 
-	bool CXmlRpcFieldSerializer::CanVisit(const char* Name, bool bValid) const
+	bool CXmlRpcFieldSerializer::CanVisit(const char* Name, bool ValidField) const
 	{ 
-		return (!bSave && XmlValue.hasMember(Name)) || bValid;
+		return (!bSave && XmlValue.hasMember(Name)) || ValidField;
 	};
 
 	void CXmlRpcFieldSerializer::Visit(const char* Name, bool& Value)
@@ -175,12 +175,4 @@ namespace Bugzilla
 			Visitable.SetSize(serializer.XmlValue.size());
 		Visitable.Accept(serializer);
 	}
-
-	void Visit(CFieldVisitor& Visitor, const char* Name, stringA& Value, bool bMandatory)
-	{
-		if (Visitor.CanVisit(Name, !Value.empty()))
-			Visitor.Visit(Name, Value);
-		else if (bMandatory)
-			throw new CBugzillaException(string("Could not access mandatory element named ") + Name);
-	};
 };

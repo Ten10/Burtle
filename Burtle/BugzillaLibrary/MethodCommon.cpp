@@ -170,8 +170,8 @@ namespace Bugzilla
 
 	void CBugzillaException::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "faultCode", ErrorCode);
-		Bugzilla::Visit(Visitor, "faultString", ErrorMessage);
+		Bugzilla::TryVisit(Visitor, "faultCode", ErrorCode);
+		Bugzilla::TryVisit(Visitor, "faultString", ErrorMessage);
 	}
 
 	CBugzillaID::CBugzillaID() : ID(0)
@@ -180,12 +180,12 @@ namespace Bugzilla
 
 	void CBugzillaID::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "id", ID);
+		Bugzilla::TryVisit(Visitor, "id", ID);
 	}
 
 	void CBugzillaIDs::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "ids", IDs);
+		Bugzilla::TryVisit(Visitor, "ids", IDs);
 	}
 
 	void CBugzillaObject::Accept(CFieldVisitor& Visitor)
@@ -195,19 +195,19 @@ namespace Bugzilla
 
 	void CCommonBugParamaters::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "product", Product, false);
-		Bugzilla::Visit(Visitor, "component", Component, false);
-		Bugzilla::Visit(Visitor, "summary", Summary, false);
-		Bugzilla::Visit(Visitor, "version", Version, false);
-		Bugzilla::Visit(Visitor, "description", Description, false);
-		Bugzilla::Visit(Visitor, "op_sys", OperatingSystem, false);
-		Bugzilla::Visit(Visitor, "rep_platform", Platform, false);
-		Bugzilla::Visit(Visitor, "priority", Priority, false);
-		Bugzilla::Visit(Visitor, "severity", Severity, false);
-		Bugzilla::Visit(Visitor, "alias", Alias, false);
-		Bugzilla::Visit(Visitor, "assigned_to", AssignedTo, false);
-		Bugzilla::Visit(Visitor, "qa_contact", QAContact, false);
-		Bugzilla::Visit(Visitor, "status", Status, false);
-		Bugzilla::Visit(Visitor, "target_milestone", TargetMilestone, false);
+		Bugzilla::TryVisit(Visitor, "product", Product);
+		Bugzilla::TryVisit(Visitor, "component", Component);
+		Bugzilla::TryVisit(Visitor, "summary", Summary);
+		Bugzilla::TryVisit(Visitor, "version", Version);
+		Bugzilla::TryVisit(Visitor, "description", Description);
+		Bugzilla::TryVisit(Visitor, "op_sys", OperatingSystem);
+		Bugzilla::TryVisit(Visitor, "rep_platform", Platform);
+		Bugzilla::TryVisit(Visitor, "priority", Priority);
+		Bugzilla::TryVisit(Visitor, "severity", Severity);
+		Bugzilla::TryVisit(Visitor, "alias", Alias);
+		Bugzilla::TryVisit(Visitor, "assigned_to", AssignedTo);
+		Bugzilla::TryVisit(Visitor, "qa_contact", QAContact);
+		Bugzilla::TryVisit(Visitor, "status", Status);
+		Bugzilla::TryVisit(Visitor, "target_milestone", TargetMilestone);
 	}
 }

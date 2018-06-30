@@ -11,9 +11,12 @@ class CHandleMap
 public:
 	struct CTempMapHelper
 	{
-		CHandleMap<THandleType, TObjectType>* pHandleMap;
+		CHandleMap<THandleType, TObjectType>* pHandleMap = nullptr;
 		CTempMapHelper(const CTempCleaner&) = delete;
-		CTempMapHelper(CTempCleaner&&) = delete;
+		CTempMapHelper(CTempCleaner&& Other)
+		{
+			std::swap(pHandleMap, Other.pHandleMap);
+		}
 		CTempMapHelper& operator=(const CTempMapHelper& Other) = delete;
 		CTempMapHelper& operator=(CTempMapHelper&& Other)
 		{
@@ -97,6 +100,6 @@ public:
 
 	CTempMapHelper GetTempMapHelper()
 	{
-		return CTempMapHelper(this);
+		return this;
 	}
 };

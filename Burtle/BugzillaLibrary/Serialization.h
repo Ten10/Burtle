@@ -12,8 +12,8 @@ namespace Bugzilla
 	{
 		::std::vector<T> Container;
 
-		int GetSize() const { return static_cast<int>(Container.size()); };
-		void SetSize(int Size) { Container.resize(Size); };
+		int GetSize() const override { return static_cast<int>(Container.size()); };
+		void SetSize(int Size) override { Container.resize(Size); };
 
 		void Accept(CElementVisitor& Visitor) override
 		{
@@ -51,7 +51,7 @@ namespace Bugzilla
 	{
 		CXmlRpcFieldSerializer(XmlRpcValue& Value, bool bSave);
 
-		bool CanVisit(const char* Name, bool bValid = true) const override;
+		bool CanVisit(const char* Name, bool bValidField = true) const override;
 
 		void Visit(const char* Name, bool& Value) override;
 		void Visit(const char* Name, int& Value) override;
@@ -97,24 +97,28 @@ namespace Bugzilla
 		Visitor.Visit(nElement, Value);
 	};
 
-	template <typename T>
-	void Visit(CFieldVisitor& Visitor, const char* Name, T& Value, bool bMandatory)
+	template <typename Type>
+	inline bool TryVisit(CFieldVisitor& Visitor, const char* Name, Type& Value, bool ValidValue = true)
 	{
-		if (Visitor.CanVisit(Name, Value ? true : false))
-			Visitor.Visit(Name, Value);
-		else if (bMandatory)
-			throw new Bugzilla::CBugzillaException(string("Could not access mandatory element named ") + Name);
-	};
-
-	template <typename T>
-	void Visit(CFieldVisitor& Visitor, const char* Name, T& Value, bool bMandatory, bool bValidField)
-	{
-		if (Visitor.CanVisit(Name, bValidField))
-			Visitor.Visit(Name, Value);
-		else if (bMandatory)
-			throw new Bugzilla::CBugzillaException(string("Could not access mandatory element named ") + Name);
+		if (!Visitor.CanVisit(Name, ValidValue))
+			return false;
+		Visitor.Visit(Name, Value);
+		return true;
 	};
 
 	template <>
-	void Visit(CFieldVisitor& Visitor, const char* Name, stringA& Value, bool bMandatory);
+	inline bool TryVisit(CFieldVisitor& Visitor, const char* Name, string& Value, bool ValidValue)
+	{
+		if (!Visitor.CanVisit(Name, !Value.empty() && ValidValue))
+			return false;
+		Visitor.Visit(Name, Value);
+		return true;
+	};
+
+	template <typename Type>
+	inline void MandatoryVisit(CFieldVisitor& Visitor, const char* Name, Type& Value, bool bValidField)
+	{
+		if (!TryVisit(Visitor, Name, Value, bValidField))
+			throw CVisitException(string("Could not access mandatory element named ") + Name);
+	}
 };

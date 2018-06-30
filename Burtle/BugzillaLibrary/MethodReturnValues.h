@@ -130,30 +130,30 @@ namespace Bugzilla
 	template <>
 	void CUserInfos::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "users", Objects);
+		Bugzilla::TryVisit(Visitor, "users", Objects);
 	};
 
 	template <>
 	void CBugFields::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "fields", Objects);
+		Bugzilla::TryVisit(Visitor, "fields", Objects);
 	};
 
 	template <>
 	void CBugInfos::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "bugs", Objects);
+		Bugzilla::TryVisit(Visitor, "bugs", Objects);
 	};
 
 	template <>
 	void CProductInfos::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "products", Objects);
+		Bugzilla::TryVisit(Visitor, "products", Objects);
 	};
 
 	template <>
 	void CBugUpdateResults::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "bugs", Objects);
+		Bugzilla::TryVisit(Visitor, "bugs", Objects);
 	};
 };

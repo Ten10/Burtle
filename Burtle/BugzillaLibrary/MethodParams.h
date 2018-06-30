@@ -50,7 +50,7 @@ namespace Bugzilla
 
 		struct CBugAddCommentParam : public CVisitableStruct
 		{
-			int BugID;
+			int BugID = 0;
 			CBugComment Comment;
 			double WorkTime;
 

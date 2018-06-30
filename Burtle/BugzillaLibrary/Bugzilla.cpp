@@ -32,8 +32,15 @@ namespace Bugzilla
 	template <typename T>
 	static typename enable_if<!is_convertible<T, XmlRpcValue>::value, void>::type FromXmlRpcValue(T& Object, XmlRpcValue&& Value)
 	{
-		CXmlRpcFieldSerializer visitor(Value, false);
-		Object.Accept(visitor);
+		try
+		{
+			CXmlRpcFieldSerializer visitor(Value, false);
+			Object.Accept(visitor);
+		}
+		catch (CVisitException& e)
+		{
+			throw CBugzillaException(stringA(e.what()));
+		}
 	}
 
 	static XmlRpcValue Execute(CServer& Server, const char* FunctionName, XmlRpcValue& Param, bool bRequireLogin = false)
@@ -112,39 +119,23 @@ namespace Bugzilla
 	{
 	}
 
-	bool CBug::AppendComment(const string& Comment, double Worktime, bool bPrivate)
+	CBugzillaID CBug::AppendComment(const string& Comment, double Worktime, bool bPrivate)
 	{
-		int nCommentID = -1;
 		CBugzillaID commentID;
 		CBugAddCommentParam param;
 		param.BugID = m_BugInfo.BugInfo["id"];
 		param.Comment.Text = Comment;
 		param.Comment.bPrivate = bPrivate;
 		param.WorkTime = Worktime;
-		try
-		{
-			Execute(m_Server, "Bug.add_comment", param, commentID);
-			nCommentID = commentID.ID;
-		}
-		catch (CBugzillaException Exception)
-		{
-		}
-		return nCommentID != -1;
+		Execute(m_Server, "Bug.add_comment", param, commentID);
+		return commentID;
 	}
 
-	stringA CBug::Update(const CUpdateBugsParam& UpdateBugsParam)
+	void CBug::Update(const CUpdateBugsParam& UpdateBugsParam)
 	{
 		stringA sResult;
 		auto param = UpdateBugsParam;
-		try
-		{
-			Execute(m_Server, "Bug.update", param, true);
-		}
-		catch (CBugzillaException exception)
-		{
-			sResult = exception.ErrorMessage;
-		}
-		return sResult;
+		Execute(m_Server, "Bug.update", param, true);
 	}
 
 	CServer::CServer(const string& BugzillaURI, bool bInitialize)

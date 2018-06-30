@@ -3,11 +3,11 @@
 /* this ALWAYS GENERATED file contains the definitions for the interfaces */
 
 
- /* File created by MIDL compiler version 7.00.0555 */
-/* at Sun Mar 29 00:56:58 2015
+ /* File created by MIDL compiler version 8.00.0603 */
+/* at Sat Jun 30 14:27:36 2018
  */
 /* Compiler settings for Burtle.idl:
-    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 7.00.0555 
+    Oicf, W1, Zp8, env=Win64 (32b run), target_arch=AMD64 8.00.0603 
     protocol : dce , ms_ext, c_ext, robust
     error checks: allocation ref bounds_check enum stub_data 
     VC __declspec() decoration level: 
@@ -48,12 +48,14 @@
 #ifndef __IBugTraqProvider_FWD_DEFINED__
 #define __IBugTraqProvider_FWD_DEFINED__
 typedef interface IBugTraqProvider IBugTraqProvider;
+
 #endif 	/* __IBugTraqProvider_FWD_DEFINED__ */
 
 
 #ifndef __IBugTraqProvider2_FWD_DEFINED__
 #define __IBugTraqProvider2_FWD_DEFINED__
 typedef interface IBugTraqProvider2 IBugTraqProvider2;
+
 #endif 	/* __IBugTraqProvider2_FWD_DEFINED__ */
 
 
@@ -123,6 +125,7 @@ EXTERN_C const IID IID_IBugTraqProvider;
         
     };
     
+    
 #else 	/* C style interface */
 
     typedef struct IBugTraqProviderVtbl
@@ -133,7 +136,7 @@ EXTERN_C const IID IID_IBugTraqProvider;
             IBugTraqProvider * This,
             /* [in] */ REFIID riid,
             /* [annotation][iid_is][out] */ 
-            __RPC__deref_out  void **ppvObject);
+            _COM_Outptr_  void **ppvObject);
         
         ULONG ( STDMETHODCALLTYPE *AddRef )( 
             IBugTraqProvider * This);
@@ -260,6 +263,7 @@ EXTERN_C const IID IID_IBugTraqProvider2;
         
     };
     
+    
 #else 	/* C style interface */
 
     typedef struct IBugTraqProvider2Vtbl
@@ -270,7 +274,7 @@ EXTERN_C const IID IID_IBugTraqProvider2;
             IBugTraqProvider2 * This,
             /* [in] */ REFIID riid,
             /* [annotation][iid_is][out] */ 
-            __RPC__deref_out  void **ppvObject);
+            _COM_Outptr_  void **ppvObject);
         
         ULONG ( STDMETHODCALLTYPE *AddRef )( 
             IBugTraqProvider2 * This);

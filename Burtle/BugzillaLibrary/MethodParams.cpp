@@ -7,16 +7,16 @@ namespace Bugzilla
 	{
 		void CLoginParam::Accept(CFieldVisitor& Visitor)
 		{
-			Bugzilla::Visit(Visitor, "login", Username);
-			Bugzilla::Visit(Visitor, "password", Password);
-			Bugzilla::Visit(Visitor, "restrict_login", bRestrictLogin);
+			Bugzilla::TryVisit(Visitor, "login", Username);
+			Bugzilla::TryVisit(Visitor, "password", Password);
+			Bugzilla::TryVisit(Visitor, "restrict_login", bRestrictLogin);
 		}
 
 		void CUserSearchParam::Accept(CFieldVisitor& Visitor)
 		{
-			Bugzilla::Visit(Visitor, "ids", IDs);
-			Bugzilla::Visit(Visitor, "names", Names);
-			Bugzilla::Visit(Visitor, "match", Match);
+			Bugzilla::TryVisit(Visitor, "ids", IDs);
+			Bugzilla::TryVisit(Visitor, "names", Names);
+			Bugzilla::TryVisit(Visitor, "match", Match);
 		}
 	};
 
@@ -25,37 +25,34 @@ namespace Bugzilla
 
 		void CGetBugParam::Accept(CFieldVisitor& Visitor)
 		{
-			Bugzilla::Visit(Visitor, "ids", BugIDs);
+			Bugzilla::TryVisit(Visitor, "ids", BugIDs);
 		}
 
 		void CGetBugFieldParam::Accept(CFieldVisitor& Visitor)
 		{
 			if (FieldIDs.Container.size())
-				Bugzilla::Visit(Visitor, "ids", FieldIDs);
+				Bugzilla::TryVisit(Visitor, "ids", FieldIDs);
 			if (FieldNames.Container.size())
-				Bugzilla::Visit(Visitor, "names", FieldNames);
+				Bugzilla::TryVisit(Visitor, "names", FieldNames);
 		}
 
 		void CBugComment::Accept(CFieldVisitor& Visitor)
 		{
-			if (Visitor.CanVisit("comment", !Text.empty()))
-			{
-				Bugzilla::Visit(Visitor, "comment", Text);
-				Bugzilla::Visit(Visitor, "is_private", bPrivate);
-			}
+			Bugzilla::TryVisit(Visitor, "comment", Text);
+			Bugzilla::TryVisit(Visitor, "is_private", bPrivate);
 		}
 
 		void CBugAddCommentParam::Accept(CFieldVisitor& Visitor)
 		{
 			Comment.Accept(Visitor);
-			Bugzilla::Visit(Visitor, "id", BugID);
-			Bugzilla::Visit(Visitor, "work_time", WorkTime);
+			Bugzilla::TryVisit(Visitor, "id", BugID, BugID > 0);
+			Bugzilla::TryVisit(Visitor, "work_time", WorkTime);
 		}
 
 		void CCreateBugParam::Accept(CFieldVisitor& Visitor)
 		{
 			CommonParameters.Accept(Visitor);
-			Bugzilla::Visit(Visitor, "cc", Cc);
+			Bugzilla::TryVisit(Visitor, "cc", Cc);
 		}
 
 		void CUpdateBugsParam::Accept(CFieldVisitor& Visitor)
@@ -96,9 +93,9 @@ namespace Bugzilla
 
 		void CBugSearchParam::Accept(CFieldVisitor& Visitor)
 		{
-			Bugzilla::Visit(Visitor, "id", ID, false, ID > 0);
-			Bugzilla::Visit(Visitor, "limit", Limit, false, Limit >= 0);
-			Bugzilla::Visit(Visitor, "offset", Offset, false, Offset >= 0);
+			Bugzilla::TryVisit(Visitor, "id", ID, ID > 0);
+			Bugzilla::TryVisit(Visitor, "limit", Limit, Limit >= 0);
+			Bugzilla::TryVisit(Visitor, "offset", Offset, Offset >= 0);
 		
 			pair<string, string*> Fields [] = 
 			{ 
@@ -119,11 +116,10 @@ namespace Bugzilla
 			};
 
 			for (auto& fieldPair : Fields)
+				Bugzilla::TryVisit(Visitor, fieldPair.first.c_str(), *fieldPair.second);
 
-				Bugzilla::Visit(Visitor, fieldPair.first.c_str(), *fieldPair.second, false);
-
-			Bugzilla::Visit(Visitor, "creation_time", Created, false, Created.tm_year ? true : false);
-			Bugzilla::Visit(Visitor, "last_change_time", Changed, false, Changed.tm_year ? true : false);
+			Bugzilla::TryVisit(Visitor, "creation_time", Created, Created.tm_year ? true : false);
+			Bugzilla::TryVisit(Visitor, "last_change_time", Changed, Changed.tm_year ? true : false);
 		}
 	};
 }

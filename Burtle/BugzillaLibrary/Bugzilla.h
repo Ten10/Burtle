@@ -39,8 +39,8 @@ namespace Bugzilla
 	public:
 		CBug(CServer& Server, const CBugInfo& BugInfo);
 
-		bool AppendComment(const stringA& Comment, double Worktime = 0, bool Private = false);
-		stringA Update(const BugFunctionParams::CUpdateBugsParam& UpdateBugsParam);
+		CBugzillaID AppendComment(const string& Comment, double Worktime = 0, bool Private = false);
+		void Update(const BugFunctionParams::CUpdateBugsParam& UpdateBugsParam);
 	};
 
 	class CServer

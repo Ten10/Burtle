@@ -5,10 +5,11 @@ struct COptions
 {
 	CStringA BugzillaURI;
 
-	bool bAuthenticationRequired;
+	bool AuthenticationRequired;
 	CStringA Username;
 	CProtectedStringA Password;
 	UINT MaxNumberOfBugsPerSearch = 100;
+	bool AppendCommitMessage = true;
 
 	void Serialize(CArchive& Archive);
 	

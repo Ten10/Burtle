@@ -33,7 +33,8 @@ bool COptionsDialog::OnInitDialog()
 	SetDlgItemValue(IDC_URI_EDIT, m_Options.BugzillaURI.c_str());
 	SetDlgItemValue(IDC_USERNAME_EDIT, m_Options.Username.c_str());
 	SetDlgItemValue(IDC_PASSWORD_EDIT, m_Options.Password.GetString().c_str());
-	CheckDlgButton(IDC_AUTHENTICATION_CHECK, m_Options.bAuthenticationRequired);
+	CheckDlgButton(IDC_AUTHENTICATION_CHECK, m_Options.AuthenticationRequired);
+	CheckDlgButton(IDC_APPEND_COMMIT_MESSAGE_CHECK, m_Options.AppendCommitMessage);
 	OnBnClickedAuthenticationCheck(nullptr);
 
 	return true; 
@@ -45,15 +46,15 @@ void COptionsDialog::DoDataExchange(CDataExchange& DataExchange)
 	DDX(DataExchange, IDC_USERNAME_EDIT, m_Options.Username);
 	DDX(DataExchange, IDC_PASSWORD_EDIT, m_Options.Password);
 	DDX(DataExchange, IDC_MAX_NUMBER_OF_BUGS_PER_SEARCH_EDIT, m_Options.MaxNumberOfBugsPerSearch);
-	DDX_CheckBox(DataExchange, IDC_AUTHENTICATION_CHECK, m_Options.bAuthenticationRequired);
-
+	DDX_CheckBox(DataExchange, IDC_AUTHENTICATION_CHECK, m_Options.AuthenticationRequired);
+	DDX_CheckBox(DataExchange, IDC_APPEND_COMMIT_MESSAGE_CHECK, m_Options.AuthenticationRequired);
 }
 
 void COptionsDialog::OnBnClickedAuthenticationCheck(const CWindow* pSender)
 {
-	bool bAuthenticationRequired = IsDlgButtonChecked(IDC_AUTHENTICATION_CHECK) ? true : false;
-	EnableDlgItem(IDC_USERNAME_EDIT, bAuthenticationRequired);
-	EnableDlgItem(IDC_PASSWORD_EDIT, bAuthenticationRequired);
+	bool AuthenticationRequired = IsDlgButtonChecked(IDC_AUTHENTICATION_CHECK) ? true : false;
+	EnableDlgItem(IDC_USERNAME_EDIT, AuthenticationRequired);
+	EnableDlgItem(IDC_PASSWORD_EDIT, AuthenticationRequired);
 }
 
 CString COptionsDialog::GetOptions() const

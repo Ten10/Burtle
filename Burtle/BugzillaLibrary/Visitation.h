@@ -49,7 +49,7 @@ namespace Bugzilla
 
 	struct CFieldVisitor
 	{
-		virtual bool CanVisit(const char* Name, bool bValid = true) const = 0;
+		virtual bool CanVisit(const char* Name, bool bValidField) const = 0;
 
 		virtual void Visit(const char* Name, bool& Value) = 0;
 		virtual void Visit(const char* Name, int& Value) = 0;
@@ -64,11 +64,19 @@ namespace Bugzilla
 
 	struct CVisitException : exception
 	{
-		CVisitException(const char* pMessage)
-			: exception(pMessage)
+		CVisitException(string&& Message)
+			: exception("Visitation Exception")
+			, m_Message(std::move(Message))
 		{
 
 		}
+
+		const char* what() const override
+		{
+			return m_Message.c_str();
+		}
+
+		string m_Message;
 	};
 
 #define THROW_VISIT_EXCEPTION(msg) throw CVisitException(__FUNCTION__ ": " msg)

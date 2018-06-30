@@ -32,6 +32,12 @@ CLayoutHelper::CLayoutInitializer::~CLayoutInitializer()
 	}
 }
 
+CLayoutHelper::CLayoutInitializer::CLayoutInitializer(CLayoutInitializer&& Other)
+	: m_LayoutHelper(Other.m_LayoutHelper)
+{
+	std::swap(m_ControlIDToLayoutFlags, Other.m_ControlIDToLayoutFlags);
+}
+
 void CLayoutHelper::CLayoutInitializer::AddControl(UINT ControlID, eLayoutFlags LayoutFlags)
 {
 	m_ControlIDToLayoutFlags[ControlID] = LayoutFlags;

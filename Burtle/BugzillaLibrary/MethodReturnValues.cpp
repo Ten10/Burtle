@@ -5,44 +5,44 @@ namespace Bugzilla
 {
 	void CActiveLogin::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "id", UserID);
-		Bugzilla::Visit(Visitor, "token", Token);
+		Bugzilla::TryVisit(Visitor, "id", UserID);
+		Bugzilla::TryVisit(Visitor, "token", Token);
 	}
 
 	void CGetVersionInfo::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "version", Version);
+		Bugzilla::TryVisit(Visitor, "version", Version);
 	}
 
 	void CGetTimeInfo::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "web_time", WebTime);
-		Bugzilla::Visit(Visitor, "db_time", DatabaseTime);
+		Bugzilla::TryVisit(Visitor, "web_time", WebTime);
+		Bugzilla::TryVisit(Visitor, "db_time", DatabaseTime);
 	}
 
 	void CBugUpdateResult::Accept(CFieldVisitor& Visitor)
 	{
 		__super::Accept(Visitor);
-		Bugzilla::Visit(Visitor, "alias", Alias);
-		Bugzilla::Visit(Visitor, "last_change_time", LastChangeTime);
+		Bugzilla::TryVisit(Visitor, "alias", Alias);
+		Bugzilla::TryVisit(Visitor, "last_change_time", LastChangeTime);
 	}
 
 	void CBugField::CFieldValue::CStatusOption::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "name", Name);
-		Bugzilla::Visit(Visitor, "comment_required", bCommentRequired);
+		Bugzilla::TryVisit(Visitor, "name", Name);
+		Bugzilla::TryVisit(Visitor, "comment_required", bCommentRequired);
 	}
 
 	void CBugField::CFieldValue::Accept(CFieldVisitor& Visitor)
 	{
-		Bugzilla::Visit(Visitor, "is_open", bOpen, false);
-		Bugzilla::Visit(Visitor, "is_active", bIsActive, false);
-		Bugzilla::Visit(Visitor, "name", Name, false);
-		Bugzilla::Visit(Visitor, "sort_key", SortKey);
-		Bugzilla::Visit(Visitor, "description", Description, false);
-		Bugzilla::Visit(Visitor, "visibility_values", VisibillityValues, false);
-
-		Bugzilla::Visit(Visitor, "can_change_to", CanChangeTo, false);
+		Bugzilla::TryVisit(Visitor, "is_open", bOpen);
+		Bugzilla::TryVisit(Visitor, "is_active", bIsActive);
+		Bugzilla::TryVisit(Visitor, "name", Name);
+		Bugzilla::TryVisit(Visitor, "sort_key", SortKey);
+		Bugzilla::TryVisit(Visitor, "description", Description);
+		Bugzilla::TryVisit(Visitor, "visibility_values", VisibillityValues);
+				  
+		Bugzilla::TryVisit(Visitor, "can_change_to", CanChangeTo);
 	}
 
 	bool CBugField::ShouldDisplay() const
@@ -63,17 +63,17 @@ namespace Bugzilla
 	{
 		__super::Accept(Visitor);
 		int nType = FieldType;
-		Bugzilla::Visit(Visitor, "type", nType);
+		Bugzilla::TryVisit(Visitor, "type", nType);
 		FieldType = (eType)nType;
-		Bugzilla::Visit(Visitor, "is_custom", bCustom);
-		Bugzilla::Visit(Visitor, "is_mandatory", bMandatory);
-		Bugzilla::Visit(Visitor, "is_on_bug_entry", bInBugEntry);
-		Bugzilla::Visit(Visitor, "name", Name);
-		Bugzilla::Visit(Visitor, "display_name", DisplayName);
-		Bugzilla::Visit(Visitor, "visibility_field", VisibillityField, false);
-		Bugzilla::Visit(Visitor, "visibility_values", VisibillityValues);
-		Bugzilla::Visit(Visitor, "value_field", ValueField, false);
-		Bugzilla::Visit(Visitor, "values", Values, false);
+		Bugzilla::TryVisit(Visitor, "is_custom", bCustom);
+		Bugzilla::TryVisit(Visitor, "is_mandatory", bMandatory);
+		Bugzilla::TryVisit(Visitor, "is_on_bug_entry", bInBugEntry);
+		Bugzilla::TryVisit(Visitor, "name", Name);
+		Bugzilla::TryVisit(Visitor, "display_name", DisplayName);
+		Bugzilla::TryVisit(Visitor, "visibility_field", VisibillityField);
+		Bugzilla::TryVisit(Visitor, "visibility_values", VisibillityValues);
+		Bugzilla::TryVisit(Visitor, "value_field", ValueField);
+		Bugzilla::TryVisit(Visitor, "values", Values);
 	}
 
 	CBugInfo::CBugInfo(XmlRpcValue&& Value)
@@ -99,18 +99,18 @@ namespace Bugzilla
 	void CUserInfo::Accept(CFieldVisitor& Visitor)
 	{
 		__super::Accept(Visitor);
-		Bugzilla::Visit(Visitor, "real_name", Name);
-		Bugzilla::Visit(Visitor, "email", Email);
-		Bugzilla::Visit(Visitor, "name", LoginName);
-		Bugzilla::Visit(Visitor, "can_login", bCanLogin);
-		Bugzilla::Visit(Visitor, "email_enabled", bEmailEnabled);
-		Bugzilla::Visit(Visitor, "login_denied_text", LoginDeniedText);
+		Bugzilla::TryVisit(Visitor, "real_name", Name);
+		Bugzilla::TryVisit(Visitor, "email", Email);
+		Bugzilla::TryVisit(Visitor, "name", LoginName);
+		Bugzilla::TryVisit(Visitor, "can_login", bCanLogin);
+		Bugzilla::TryVisit(Visitor, "email_enabled", bEmailEnabled);
+		Bugzilla::TryVisit(Visitor, "login_denied_text", LoginDeniedText);
 	}
 
 	void CProductInfo::Accept(CFieldVisitor& Visitor)
 	{
 		__super::Accept(Visitor);
-		Bugzilla::Visit(Visitor, "name", Name);
-		Bugzilla::Visit(Visitor, "description", Description);
+		Bugzilla::TryVisit(Visitor, "name", Name);
+		Bugzilla::TryVisit(Visitor, "description", Description);
 	}
 }

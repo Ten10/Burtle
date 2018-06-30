@@ -44,18 +44,14 @@ static void ByteArrayToHexString(const vector<BYTE>& Data, CString& sHexString)
 	});
 }
 
-static vector<BYTE> EncryptPassword()
-{
-
-}
-
 void COptions::Serialize(CArchive& Archive)
 {
-	::Serialize(Archive, bAuthenticationRequired);
+	::Serialize(Archive, AuthenticationRequired);
 	::Serialize(Archive, BugzillaURI);
 	::Serialize(Archive, Username);
 	Password.Serialize(Archive);
 	::Serialize(Archive, MaxNumberOfBugsPerSearch);
+	::Serialize(Archive, AppendCommitMessage);
 }
 
 COptions COptions::FromTortoiseString(const CString& String)

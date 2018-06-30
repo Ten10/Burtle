@@ -91,7 +91,7 @@ public:
 	map<int, CBugModificationInfo> GetBugModificationInfos() const;
 
 	void OnBugFieldsAvailable(vector<CBugField>& Fields);
-	void OnBugInfosAvailable(CBugzillaQuery& Query);
+	void OnBugInfosAvailable(CBugzillaQuery&& Query);
 	void OnBugInfosCompleted();
 
 	void OnBnClickedSearchButton(const CWindow* pSender);

@@ -147,7 +147,7 @@ HRESULT STDMETHODCALLTYPE CBurtleProvider::GetCommitMessage2(
 	//AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	auto options = COptions::FromTortoiseString(CString(parameters));
-	if (options.BugzillaURI.empty() || (options.bAuthenticationRequired && options.Username.empty()))
+	if (options.BugzillaURI.empty() || (options.AuthenticationRequired && options.Username.empty()))
 	{
 		BurtleMessageBox(_T("Missing bugzilla connection info."), MB_OK);
 		return S_FALSE;
@@ -160,7 +160,7 @@ HRESULT STDMETHODCALLTYPE CBurtleProvider::GetCommitMessage2(
 		return S_FALSE;
 	}
 
-	if (options.bAuthenticationRequired)
+	if (options.AuthenticationRequired)
 	{
 		try
 		{
@@ -246,7 +246,8 @@ HRESULT STDMETHODCALLTYPE CBurtleProvider::OnCommitFinished (
 	if (!m_upServer)
 		return S_FALSE;
 
-	CString sAllErrors;
+	CStringA sCommitMessage(CT2A(logMessage));
+	std::wstringstream sAllErrors;
 	for (auto& bugInfo : m_RecentQuery.BugInfos)
 	{
 		auto it = m_BugIDToModificationInfo.find(bugInfo.GetBugID());
@@ -254,27 +255,40 @@ HRESULT STDMETHODCALLTYPE CBurtleProvider::OnCommitFinished (
 			continue;
 
 		CBug bug(*m_upServer, bugInfo);
+		CString sErrorType;
 		CStringA sError;
 		try
 		{
-			sError = bug.Update(it->second.ToUpdateBugParam(bugInfo));
+			sErrorType = _T("Update");
+			bug.Update(it->second.ToUpdateBugParam(bugInfo));
 		}
 		catch (exception& e)
 		{
 			sError = e.what();
 		}
+		// Currently chosen behavior is to only append the commit if we managed to update the bug.
+		if (sError.empty())
+		{
+			try
+			{
+				// Not sure about behavior with unicode comments.
+				sErrorType = _T("Append Comment");
+				bug.AppendComment(sCommitMessage);
+			}
+			catch (exception& e)
+			{
+				sError = e.what();
+			}
+		}
 		if (!sError.empty() && error)
 		{
-			sAllErrors += _T("Bug #");
-			sAllErrors += to_wstring(it->first);
-			sAllErrors += _T(": ");
-			sAllErrors += CA2T(sError.c_str());
-			sAllErrors += _T("\r\n");
+			sAllErrors << _T("Bug #") << to_wstring(it->first) << _T(" ") << sErrorType << _T(": ");
+			sAllErrors << CA2T(sError.c_str()) << std::endl;
 		}
 	}
 
 	if (error)
-		*error = ::SysAllocString(sAllErrors.c_str());
+		*error = ::SysAllocString(sAllErrors.str().c_str());
 
     return S_OK;
 }

@@ -36,6 +36,7 @@ public:
 	public:
 		CLayoutInitializer(CLayoutHelper& LayoutHelper);
 		~CLayoutInitializer();
+		CLayoutInitializer(CLayoutInitializer&& Other);
 
 		void AddControl(UINT ControlID, eLayoutFlags LayoutFlags);
 	};
